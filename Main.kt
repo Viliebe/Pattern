@@ -6,6 +6,7 @@ class Main {
         val ravil = Student("Mango","Zed","Dinovich", "+7900000000","@username","mailexample@gmail.com","https://github.com/Rukmenga")
         println(sasha.toString())
         println(ravil.toString())
+        println(ravil.validate())
     }
 }
 fun main() = Main().main()
