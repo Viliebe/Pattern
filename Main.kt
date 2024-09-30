@@ -7,6 +7,8 @@ class Main {
         println(sasha.toString())
         println(ravil.toString())
         println(ravil.validate())
+        ravil.setContacts("89005553535","zxccursed","lombard@yandex.ru")
+        println(ravil.toString())
     }
 }
 fun main() = Main().main()
