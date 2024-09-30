@@ -2,8 +2,8 @@ import Student
 class Main {
     fun main()
     {
-        val sasha = Student("Zayc","Sanina","Govninovna", _phone = "8900s9v0n2+")
-        val ravil = Student("Mango","Zed","Dinovich",_phone = "+7900000000")
+        val sasha = Student("Zayc","Sanina","Govninovna", "8900s9v0n2+","username","mailexample.com","https://github.com")
+        val ravil = Student("Mango","Zed","Dinovich", "+7900000000","@username","mailexample@gmail.com","https://github.com/Rukmenga")
         println(sasha.toString())
         println(ravil.toString())
     }
