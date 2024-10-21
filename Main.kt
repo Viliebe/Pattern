@@ -19,6 +19,8 @@ class Main {
         var jenek=Student("Evgeniy Prokopenko Evgenievich")
         println(jenek.toString())
         println(ravil.getInfo())
+        var rav=StudentShort(ravil)
+        println(rav.toString())
     }
 }
 fun main() = Main().main()
