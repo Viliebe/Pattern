@@ -7,8 +7,18 @@ class Main {
         println(sasha.toString())
         println(ravil.toString())
         println(ravil.validate())
-        ravil.setContacts("89005553535","zxccursed","lombard@yandex.ru")
+        ravil.setContacts("89999999999","wrongtelegram","mail@yandex.ru")
         println(ravil.toString())
+         var ivanInp= hashMapOf<String,Any?>(
+            "lastname" to "Ivanko",
+            "name" to "Ivan",
+            "fathername" to "Ivanevich"
+        )
+        var ivan=Student(ivanInp)
+        println(ivan.toString())
+        var jenek=Student("Evgeniy Prokopenko Evgenievich")
+        println(jenek.toString())
+        println(ravil.getInfo())
     }
 }
 fun main() = Main().main()
