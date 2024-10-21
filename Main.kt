@@ -21,6 +21,11 @@ class Main {
         println(ravil.getInfo())
         var rav=StudentShort(ravil)
         println(rav.toString())
+        var studList= Student.readFromTxt("input.txt")
+        for (stud in studList)
+        {
+            println(stud)
+        }
     }
 }
 fun main() = Main().main()
