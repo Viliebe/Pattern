@@ -9,7 +9,7 @@ class Main {
         println(ravil.validate())
         ravil.setContacts("89999999999","wrongtelegram","mail@yandex.ru")
         println(ravil.toString())
-         var ivanInp= hashMapOf<String,Any?>(
+        var ivanInp= hashMapOf<String,Any?>(
             "lastname" to "Ivanko",
             "name" to "Ivan",
             "fathername" to "Ivanevich"
@@ -26,6 +26,7 @@ class Main {
         {
             println(stud)
         }
+        Student.writeToTxt("output.txt",studList)
     }
 }
 fun main() = Main().main()

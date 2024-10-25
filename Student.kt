@@ -188,6 +188,16 @@ class Student : StudentSuper {
             }
             return res
         }
+        fun writeToTxt(path: String, studentList:MutableList<Student>)
+        {
+            val file = File(path)
+            var text = ""
+            for(stud in studentList)
+            {
+                text+=(stud.toString()+"\n")
+            }
+            file.writeText(text)
+        }
     }
 
     constructor(_surname:String,_name:String,_patronymic:String)
