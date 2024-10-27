@@ -9,17 +9,32 @@ open class StudentSuper {
         {
             return field
         }
+    var git: String? = null
+        set(value)
+        {
+            if(validateGit(value))
+            {
+                field=value
+            }
+        }
+        get()
+        {
+            return field
+        }
     companion object
     {
         var ids = 0
+
         fun validatePhone(value:String?): Boolean
         {
             return value?.matches(Regex("""\+?\d{11}""")) ?: true
         }
+
         fun validateNames(value:String): Boolean
         {
             return value.matches(Regex("""[A-Я]{1}[a-я]*"""))
         }
+
         fun validateTelegram(value:String?): Boolean
         {
             return value?.matches(Regex("""\@{1}.*""")) ?: true

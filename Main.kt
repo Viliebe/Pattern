@@ -9,29 +9,44 @@ class Main {
         println(ravil.validate())
         ravil.setContacts("89999999999","wrongtelegram","mail@yandex.ru")
         println(ravil.toString())
-//                var ivanInp= hashMapOf<String,Any?>(
-//            "surname" to "Ivanov
-//            "name" to "Ivan",
-//            "patronymic" to "Ivanovich"
-//        )
-//        var ivan=Student(ivanInp)
-//        println(ivan.toString())
-//
-//        var danila=Student("Daniil Danilanin Danilavich")
-//        println(danila.toString())
-//        println(ravil.getInfo())
-//        var vik=StudentShort(ravil)
-//        println(rav.toString())
+        var ivanInp= hashMapOf<String,Any?>(
+            "surname" to "Ivanov",
+            "name" to "Ivan",
+            "patronymic" to "Ivanovich"
+        )
+        var ivan=Student(ivanInp)
+        println(ivan.toString())
+        var danila=Student("Daniil Danilanin Danilavich")
+        println(danila.toString())
 //        var studList= Student.readFromTxt("input.txt")
 //        for (stud in studList)
 //        {
 //            println(stud)
 //        }
 //        Student.writeToTxt("output.txt",studList)
-        var dtt=DataTable(arrayOf(arrayOf(1,2,3), arrayOf(4,5,6),arrayOf("a","b",3)))
-        println(dtt.getElement(2,2))
-        println(dtt.getRows())
-        println(dtt.getColumns())
+        //
+//        var dtt=DataTable(mutableListOf(mutableListOf(1,2,3), mutableListOf(4,5,6), mutableListOf("a","b",3)))
+//        println(dtt.getElement(2,2))
+//        println(dtt.getRows())
+//        println(dtt.getColumns())
+        var dlss=DataListStudentShort(mutableListOf(
+            StudentShort(sasha),
+            StudentShort(ravil),
+            StudentShort(ivan),
+            StudentShort(danila)
+        ))
+        dlss.select(1)
+        dlss.select(2)
+        var dtss=dlss.getTable()
+        for (i in 0..dtss.getRows()-1)
+        {
+            for(j in 0..dtss.getColumns()-1)
+            {
+                print(dtss.getElement(i,j))
+                print(" ")
+            }
+            println()
+        }
     }
 }
 fun main() = Main().main()
