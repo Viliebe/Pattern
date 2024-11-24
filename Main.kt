@@ -1,4 +1,5 @@
 import Student
+
 class Main {
     fun main()
     {
@@ -18,17 +19,17 @@ class Main {
         println(ivan.toString())
         var danila=Student("Daniil Danilanin Danilavich")
         println(danila.toString())
-//        var studList= Student.readFromTxt("input.txt")
-//        for (stud in studList)
-//        {
-//            println(stud)
-//        }
-//        Student.writeToTxt("output.txt",studList)
-        //
-//        var dtt=DataTable(mutableListOf(mutableListOf(1,2,3), mutableListOf(4,5,6), mutableListOf("a","b",3)))
-//        println(dtt.getElement(2,2))
-//        println(dtt.getRows())
-//        println(dtt.getColumns())
+        var studList= Student.readFromTxt("input.txt")
+        for (stud in studList)
+        {
+            println(stud)
+        }
+        Student.writeToTxt("output.txt",studList)
+
+        var dtt=DataTable(mutableListOf(mutableListOf(1,2,3), mutableListOf(4,5,6), mutableListOf("a","b",3)))
+        println(dtt.getElement(2,2))
+        println(dtt.getRows())
+        println(dtt.getColumns())
         var dlss=DataListStudentShort(mutableListOf(
             StudentShort(sasha),
             StudentShort(ravil),

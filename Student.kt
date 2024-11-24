@@ -1,9 +1,11 @@
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.IOException
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.annotation.JsonCreator
 
 class Student : StudentSuper {
-    var surname: String =""
+    @field:JsonProperty("surname") var surname: String =""
         set(value)
         {
             if(validateNames(value))
@@ -19,7 +21,7 @@ class Student : StudentSuper {
         {
             return field
         }
-    var name: String =""
+    @field:JsonProperty("name") var name: String =""
         set(value)
         {
             if(validateNames(value))
@@ -35,7 +37,7 @@ class Student : StudentSuper {
         {
             return field
         }
-    var patronymic: String =""
+    @field:JsonProperty("patronymic") var patronymic: String =""
         set(value)
         {
             if(validateNames(value))
@@ -51,7 +53,7 @@ class Student : StudentSuper {
         {
             return field
         }
-    var phone: String? =null
+    @field:JsonProperty("phone") var phone: String? =null
         set(value)
         {
             if(validatePhone(value)) {
@@ -63,7 +65,7 @@ class Student : StudentSuper {
             return field
         }
 
-    var telegram: String? =null
+    @field:JsonProperty("telegram") var telegram: String? =null
         set(value)
         {
             if(validateTelegram(value))
@@ -76,7 +78,7 @@ class Student : StudentSuper {
             return field
         }
 
-    var mail: String? =null
+    @field:JsonProperty("mail") var mail: String? =null
         set(value)
         {
             if(validateMail(value))
@@ -119,25 +121,25 @@ class Student : StudentSuper {
         }
     }
 
-    fun getInfo() : String
+    fun info() : String
     {
-        var res ="ФИО: "+getShortName()
+        var res ="ФИО: "+shortName()
         if(hasGit())
         {
             res+= " Гит: "+git
         }
         if(hasContact())
         {
-            res+=" "+getContact()
+            res+=" "+contact()
         }
         return res
     }
-    fun getShortName(): String
+    fun shortName(): String
     {
         var res=surname+" "+name[0]+"."+patronymic[0]+". "
         return res
     }
-    fun getContact(): String
+    fun contact(): String
     {
         if(mail!=null)
         {
@@ -187,6 +189,26 @@ class Student : StudentSuper {
         }
     }
 
+    @JsonCreator constructor(
+        @JsonProperty("id") _id: String = "0",
+        @JsonProperty("git") _git: String? = "",
+        @JsonProperty("surname") _surname: String = "",
+        @JsonProperty("name")  _name: String = "",
+        @JsonProperty("patronymic")  _patronymic: String = "",
+        @JsonProperty("phone")  _phone: String? = null,
+        @JsonProperty("telegram")  _telegram: String? = null,
+        @JsonProperty("mail")  _mail: String? = null,)
+    {
+        id=_id.toInt()
+        surname=_surname
+        name=_name
+        patronymic=_patronymic
+        phone=_phone
+        telegram=_telegram
+        mail=_mail
+        git=_git
+    }
+
     constructor(_surname:String,_name:String,_patronymic:String)
     {
         id=ids
@@ -206,6 +228,17 @@ class Student : StudentSuper {
         git=_git
     }
 
+    constructor(_id:Int,_surname:String,_name:String,_patronymic:String,_phone:String?=null,_telegram:String?=null,_mail:String?=null,_git:String?=null)
+    {
+        id = _id
+        surname=_surname
+        name=_name
+        patronymic=_patronymic
+        phone=_phone
+        telegram=_telegram
+        mail=_mail
+        git=_git
+    }
     constructor(hashStud: HashMap<String,Any?>)
     {
         id=ids
@@ -230,6 +263,16 @@ class Student : StudentSuper {
         if(telegram!=null)out+=", Телеграм: $telegram"
         if(mail!=null)out+=", Почта: $mail"
         if(git!=null)out+=", Гит: $git"
+        return out
+    }
+
+    fun toStringRaw() : String
+    {
+        var out = "$id $surname $name $patronymic"
+        if(phone!=null)out+=" $phone"
+        if(telegram!=null)out+=" $telegram"
+        if(mail!=null)out+=" $mail"
+        if(git!=null)out+=" $git"
         return out
     }
 }
