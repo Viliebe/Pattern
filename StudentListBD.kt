@@ -8,7 +8,19 @@ import java.sql.DriverManager
 import java.sql.ResultSet
 import java.sql.Statement
 
-class StudentsListDB constructor() {
+class StudentsListDB private constructor() {
+
+    companion object {
+
+        @Volatile
+        private var instance: StudentsListDB? = null
+
+        fun getInstance() =
+            instance ?: synchronized(this) {
+                instance ?: StudentsListDB().also { instance = it }
+            }
+    }
+
 
     private lateinit var connection: Connection
 
@@ -96,6 +108,7 @@ class StudentsListDB constructor() {
     {
         executeQuery("DELETE FROM student WHERE id=${id};")
     }
+
     fun studentCount():Int
     {
         val result=executeQuery("SELECT COUNT(*) FROM student;")
@@ -106,14 +119,4 @@ class StudentsListDB constructor() {
         }
         return 0
     }
-}
-
-fun main() {
-    val studentDB = StudentsListDB()
-//    studentDB.getByID(1);
-//    studentDB.getKNStudentShort(1,2)
-//    studentDB.addStudent(Student("Панов","Валенсий","Иванович"))
-//    studentDB.replaceStudent(5,Student("Панов","Валенсий","Альбертович"))
-//    studentDB.deleteStudent(5)
-    println(studentDB.studentCount())
 }
