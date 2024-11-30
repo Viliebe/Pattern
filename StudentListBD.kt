@@ -89,8 +89,12 @@ class StudentsListDB constructor() {
         else{input+=", '${student.mail}'"}
         if(student.git==null){input+=", NULL"}
         else{input+=", '${student.git}'"}
-        executeQuery("UPDATE student SET (lastName, name, fatherName, phone, telegram, mail, git) = (${input}) WHERE id=${id};")
+        executeQuery("UPDATE student SET (surname, name, patronymic, phone, telegram, mail, git) = (${input}) WHERE id=${id};")
+    }
 
+    fun deleteStudent(id:Int)
+    {
+        executeQuery("DELETE FROM student WHERE id=${id};")
     }
 }
 
@@ -99,5 +103,6 @@ fun main() {
 //    studentDB.getByID(1);
 //    studentDB.getKNStudentShort(1,2)
 //    studentDB.addStudent(Student("Панов","Валенсий","Иванович"))
-    studentDB.replaceStudent(5,Student("Панов","Валенсий","Иванович"))
+//    studentDB.replaceStudent(5,Student("Панов","Валенсий","Альбертович"))
+    studentDB.deleteStudent(5)
 }
