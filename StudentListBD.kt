@@ -96,6 +96,16 @@ class StudentsListDB constructor() {
     {
         executeQuery("DELETE FROM student WHERE id=${id};")
     }
+    fun studentCount():Int
+    {
+        val result=executeQuery("SELECT COUNT(*) FROM student;")
+        if(result!=null)
+        {
+            if(result.next())
+                return result.getString("count").toInt()
+        }
+        return 0
+    }
 }
 
 fun main() {
@@ -104,5 +114,6 @@ fun main() {
 //    studentDB.getKNStudentShort(1,2)
 //    studentDB.addStudent(Student("Панов","Валенсий","Иванович"))
 //    studentDB.replaceStudent(5,Student("Панов","Валенсий","Альбертович"))
-    studentDB.deleteStudent(5)
+//    studentDB.deleteStudent(5)
+    println(studentDB.studentCount())
 }
