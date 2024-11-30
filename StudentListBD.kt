@@ -1,5 +1,8 @@
 package main.kotlin
 
+
+import StudentShort
+import Student
 import java.sql.Connection
 import java.sql.DriverManager
 import java.sql.ResultSet
@@ -26,15 +29,14 @@ class StudentsListDB constructor() {
             val stmt = connection.createStatement()
             stmt.executeQuery(query)
         } catch (e: Exception) {
-            e.printStackTrace()
+//            e.printStackTrace()
             null
         }
     }
 
     fun getByID(id: Int) {
-        val result = executeQuery("SELECT * FROM student WHERE id = ${id}")
+        val result = executeQuery("SELECT * FROM student WHERE id = ${id};")
         if (result != null) {
-            // Вывод каждой строки
             while (result.next()) {
                 for (i in 1..result.metaData.columnCount) {
                     print("${result.getString(i)}\t")
@@ -43,9 +45,59 @@ class StudentsListDB constructor() {
             }
         }
     }
+
+    fun getKNStudentShort(k:Int,n:Int):MutableList<StudentShort>
+    {
+        val start = k*n
+        val result = executeQuery("SELECT * FROM student WHERE id > ${start} ORDER BY id LIMIT ${n};")
+        var input = ""
+        var sl=mutableListOf<StudentShort>()
+        if (result != null) {
+            while (result.next()) {
+                input = ""
+                for (i in 2..result.metaData.columnCount) {
+                    input+=result.getString(i)+" "
+                }
+                sl.add(StudentShort(Student(input)))
+            }
+        }
+        return sl
+    }
+
+    fun addStudent(student:Student)
+    {
+        var input = "'${student.surname}', '${student.name}', '${student.patronymic}'"
+        if(student.phone==null){input+=", NULL"}
+        else{input+=", '${student.phone}'"}
+        if(student.telegram==null){input+=", NULL"}
+        else{input+=", '${student.telegram}'"}
+        if(student.mail==null){input+=", NULL"}
+        else{input+=", '${student.mail}'"}
+        if(student.git==null){input+=", NULL"}
+        else{input+=", '${student.git}'"}
+        executeQuery("INSERT INTO student (surname, name, patronymic, phone, telegram, mail, git) VALUES (${input});")
+    }
+
+    fun replaceStudent(id:Int,student: Student)
+    {
+        var input = "'${student.surname}', '${student.name}', '${student.patronymic}'"
+        if(student.phone==null){input+=", NULL"}
+        else{input+=", '${student.phone}'"}
+        if(student.telegram==null){input+=", NULL"}
+        else{input+=", '${student.telegram}'"}
+        if(student.mail==null){input+=", NULL"}
+        else{input+=", '${student.mail}'"}
+        if(student.git==null){input+=", NULL"}
+        else{input+=", '${student.git}'"}
+        executeQuery("UPDATE student SET (lastName, name, fatherName, phone, telegram, mail, git) = (${input}) WHERE id=${id};")
+
+    }
 }
 
 fun main() {
-    val dbConnection = StudentsListDB()
-    dbConnection.getByID(1);
+    val studentDB = StudentsListDB()
+//    studentDB.getByID(1);
+//    studentDB.getKNStudentShort(1,2)
+//    studentDB.addStudent(Student("Панов","Валенсий","Иванович"))
+    studentDB.replaceStudent(5,Student("Панов","Валенсий","Иванович"))
 }
