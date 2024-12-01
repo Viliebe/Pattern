@@ -1,4 +1,4 @@
-import Student
+import Strategy.*
 
 class Main {
     fun main()
@@ -48,18 +48,31 @@ class Main {
 //            }
 //            println()
 //        }
-        var manager = StudentManager(StudentListTxt())
-        manager.readFromFile("input.txt")
-        println(manager.data)
-        manager.writeToFile("output.txt")
-        manager.setStrategy(StudentListJson())
-        manager.readFromFile("input.json")
-        println(manager.getById(1))
-        manager.writeToFile("output.json")
-        manager.setStrategy(StudentListYaml())
-        manager.readFromFile("input.yaml")
-        println(manager.getById(1))
-        manager.writeToFile("output.yaml")
+//        var manager = StudentManager(StudentListTxt())
+//        manager.readFromFile("input.txt")
+//        println(manager.data)
+//        manager.writeToFile("output.txt")
+//        manager.setStrategy(StudentListJson())
+//        manager.readFromFile("input.json")
+//        println(manager.getById(1))
+//        manager.writeToFile("output.json")
+//        manager.setStrategy(StudentListYaml())
+//        manager.readFromFile("input.yaml")
+//        println(manager.getById(1))
+//        manager.writeToFile("output.yaml")
+        //    val studentDB = StudentsListDB.getInstance()
+//    println(studentDB.getByID(1))
+//    println(studentDB.getKNStudentShort(1,2))
+//    studentDB.addStudent(Student("Пивилин","Игорь","Васильевич"))
+//    studentDB.replaceStudent(5,Student("Пипинов","Василий","Игоревич"))
+//    studentDB.deleteStudent(5)
+//    println(studentDB.getStudentShortCount())
+        var sl = StudentList("input.txt")
+        sl.addStudent(Student("Атлетов", "Андрей", "Александрович"))
+        println(sl.getById(4).toString())
+        sl.replaceStudent(4, Student(4, "Говнокодов", "Андрей", "Александрович"))
+        println(sl.getById(4).toString())
+        println(sl.getStudentShortCount())
     }
 }
 fun main() = Main().main()
