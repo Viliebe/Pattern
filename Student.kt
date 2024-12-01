@@ -255,7 +255,9 @@ class Student : StudentSuper {
     constructor(input:String): this (input.split(" ")[0],input.split(" ")[1],input.split(" ")[2],input.split(" ").getOrNull(3),input.split(" ").getOrNull(4),input.split(" ").getOrNull(5),input.split(" ").getOrNull(6))
     {
     }
-
+    constructor(input:String,id_:Int): this (id_,input.split(" ")[0],input.split(" ")[1],input.split(" ")[2],input.split(" ").getOrNull(3),input.split(" ").getOrNull(4),input.split(" ").getOrNull(5),input.split(" ").getOrNull(6))
+    {
+    }
     override fun toString() : String
     {
         var out = "ID: $id, Фамилия: $surname, Имя: $name, Отчество: $patronymic"
