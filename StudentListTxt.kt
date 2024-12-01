@@ -3,7 +3,7 @@ import java.io.FileNotFoundException
 import java.io.IOException
 import Strategy.StudentListStrategy
 
-class StudentListTxt : StudentListSuper(),StudentListStrategy {
+class StudentListTxt : StudentListSuper(), StudentListStrategy {
     override fun readFromFile(path:String)
     {
         val file = File(path)

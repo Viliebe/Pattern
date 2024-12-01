@@ -4,8 +4,7 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import Strategy.StudentListStrategy
 
-
-class StudentListYaml : StudentListSuper(),StudentListStrategy {
+class StudentListYaml : StudentListSuper(), StudentListStrategy {
     override fun readFromFile(path:String)
     {
         val mapper = ObjectMapper(YAMLFactory()).registerKotlinModule()

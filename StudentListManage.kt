@@ -1,3 +1,6 @@
+package Strategy
+import Student
+import StudentListSuper
 interface StudentListStrategy {
     var data:MutableList<Student>
     fun readFromFile(path: String)
