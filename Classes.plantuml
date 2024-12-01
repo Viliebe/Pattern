@@ -1,0 +1,39 @@
+@startuml
+
+!theme plain
+top to bottom direction
+skinparam linetype ortho
+
+class DataList<T>
+class DataListStudentShort
+class DataTable
+class Main
+class MainKt
+class Student
+class StudentList
+class StudentListAdapter
+interface StudentListInterface << interface >>
+class StudentListJson
+interface StudentListStrategy << interface >>
+class StudentListSuper
+class StudentListTxt
+class StudentListYaml
+class StudentManager
+class StudentShort
+class StudentSuper
+class StudentsListDB
+
+DataListStudentShort  -[#000082,plain]-^  DataList             
+Student               -[#000082,plain]-^  StudentSuper         
+StudentList           -[#008200,dashed]-^  StudentListInterface 
+StudentListAdapter    -[#008200,dashed]-^  StudentListInterface 
+StudentListJson       -[#008200,dashed]-^  StudentListStrategy  
+StudentListJson       -[#000082,plain]-^  StudentListSuper     
+StudentListTxt        -[#008200,dashed]-^  StudentListStrategy  
+StudentListTxt        -[#000082,plain]-^  StudentListSuper     
+StudentListYaml       -[#008200,dashed]-^  StudentListStrategy  
+StudentListYaml       -[#000082,plain]-^  StudentListSuper     
+StudentManager        -[#000082,plain]-^  StudentListSuper     
+StudentShort          -[#000082,plain]-^  StudentSuper         
+StudentsListDB        -[#008200,dashed]-^  StudentListInterface 
+@enduml
