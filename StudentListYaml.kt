@@ -1,10 +1,13 @@
-import java.io.File
+
+import MVC.View
+import Strategy.StudentListStrategy
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
-import Strategy.StudentListStrategy
+import java.io.File
 
-class StudentListYaml : StudentListSuper(), StudentListStrategy {
+
+class StudentListYaml(view: View) : StudentListSuper(view),StudentListStrategy {
     override fun readFromFile(path:String)
     {
         val mapper = ObjectMapper(YAMLFactory()).registerKotlinModule()

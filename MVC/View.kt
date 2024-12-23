@@ -1,5 +1,6 @@
 package MVC
 
+import StudentLists.StudentList
 import StudentShort
 import javafx.application.Application
 import javafx.collections.FXCollections
@@ -8,14 +9,22 @@ import javafx.geometry.Pos
 import javafx.scene.Scene
 import javafx.scene.control.*
 import javafx.scene.control.cell.PropertyValueFactory
+import javafx.scene.layout.GridPane
 import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
 import javafx.scene.text.Font
+import javafx.stage.Modality
 import javafx.stage.Stage
 
 
 class View : Application() {
-    private val controller=Controller(this);
+    var path="input.yaml"
+    var source=StudentList(path,this)
+    private val readController=ReadController(this,source)
+    private val createController=CreateController(this,source);
+    private val updateController=UpdateController(this,source);
+    private val deleteController=DeleteController(this,source);
+
 
     private lateinit var tableView: TableView<StudentShort>
     private lateinit var pageLabel: Label
@@ -54,14 +63,14 @@ class View : Application() {
 
         val prevButton = Button("<").apply {
             setOnAction {
-                controller.currentPage-=1
-                controller.refresh_data()
+                readController.currentPage-=1
+                readController.refresh_data()
             }
         }
         val nextButton = Button(">").apply {
             setOnAction {
-                controller.currentPage+=1
-                controller.refresh_data()
+                readController.currentPage+=1
+                readController.refresh_data()
             }
         }
 
@@ -75,11 +84,11 @@ class View : Application() {
         val table = VBox(tableView, tableButtonBox)
 
 
-        nameField = TextField().apply { setOnAction { controller.refresh_data() } }
+        nameField = TextField().apply { setOnAction { readController.refresh_data() } }
         nameField.promptText = "Фамилия Имя Отчетство"
 
         contactFilterVar = FXCollections.observableArrayList("Да", "Нет", "Не важно")
-        contactComboBox = ComboBox(contactFilterVar).apply { setOnAction { controller.refresh_data() } }
+        contactComboBox = ComboBox(contactFilterVar).apply { setOnAction { readController.refresh_data() } }
         contactComboBox.value = "Не важно"
 
         val contactLabel = Label()
@@ -89,11 +98,11 @@ class View : Application() {
         contactLabel.setPrefSize(100.0, 13.0)
         val contactBox = HBox(contactLabel, contactComboBox)
 
-        contactField = TextField().apply { setOnAction { controller.refresh_data() } }
+        contactField = TextField().apply { setOnAction { readController.refresh_data() } }
         contactField.promptText = "Контакт студента"
 
         gitFilterVar = FXCollections.observableArrayList("Да", "Нет", "Не важно")
-        gitComboBox = ComboBox(gitFilterVar).apply { setOnAction { controller.refresh_data() } }
+        gitComboBox = ComboBox(gitFilterVar).apply { setOnAction { readController.refresh_data() } }
         gitComboBox.value = "Не важно"
 
         val gitLabel = Label()
@@ -103,47 +112,40 @@ class View : Application() {
         gitLabel.setPrefSize(100.0, 13.0)
         val gitBox = HBox(gitLabel, gitComboBox)
 
-        gitField = TextField().apply { setOnAction { controller.refresh_data() } }
+        gitField = TextField().apply { setOnAction { readController.refresh_data() } }
         gitField.promptText = "Гит студента"
 
-        controller.refresh_data()
+        readController.refresh_data()
 
         val addButton = Button("Добавить").apply {
-//            setOnAction {
-//                openModalWindow(0, "", "", "", "", "", "", "")
-//            }
+            setOnAction {
+                openModalWindow(0)
+                readController.refresh_data()
+            }
         }
 
         val changeButton = Button("Изменить").apply {
-//            setOnAction {
-//                val selected = tableView.selectionModel.selectedItem
-//                if (selected != null) {
-//                    openModalWindow(
-//                        selected.id,
-//                        selected.surname,
-//                        selected.name,
-//                        selected.patronymic,
-//                        selected.phone ?: "",
-//                        selected.telegram ?: "",
-//                        selected.mail ?: "",
-//                        selected.git ?: ""
-//                    )
-//                }
-//            }
+            setOnAction {
+                val selected = tableView.selectionModel.selectedItem
+                if (selected != null) {
+                    openModalWindow(selected.id)
+                    readController.refresh_data()
+                }
+            }
         }
 
         val deleteButton = Button("Удалить").apply {
-//            setOnAction {
-//                val selected = tableView.selectionModel.selectedItem
-//                if (selected != null) {
-//                    pg.deleteStudent(selected.id)
-//                    controller.refresh_data()
-//                }
-//            }
+            setOnAction {
+                val selected = tableView.selectionModel.selectedItem
+                if (selected != null) {
+                    deleteController.deleteStudent(selected.id)
+                    readController.refresh_data()
+                }
+            }
         }
         val updateButton = Button("Обновить таблицу").apply {
             setOnAction {
-                controller.refresh_data()
+                readController.refresh_data()
             }
         }
 
@@ -173,6 +175,73 @@ class View : Application() {
     public fun updatePageLabel(text:String)
     {
         pageLabel.text=text
+    }
+
+    private fun openModalWindow(
+        id: Int = 0,
+    ) {
+        val modalStage = Stage()
+        modalStage.initModality(Modality.APPLICATION_MODAL)
+        modalStage.title = "Ввод данных"
+        val grid = GridPane()
+        grid.padding = javafx.geometry.Insets(10.0)
+        grid.hgap = 10.0
+        grid.vgap = 10.0
+        val surNameField = TextField()
+        val nameField = TextField()
+        val patroNymicField = TextField()
+        val phoneField = TextField()
+        val telegramField = TextField()
+        val mailField = TextField()
+        val gitField = TextField()
+        if(id!=0)
+        {
+            var params=updateController.getStudent(id)
+            surNameField.text=params[0]
+            nameField.text=params[1]
+            patroNymicField.text=params[2]
+            phoneField.text=params[3]
+            telegramField.text=params[4]
+            mailField.text=params[5]
+            gitField.text=params[6]
+        }
+        grid.add(Label("Фамилия:"), 0, 1)
+        grid.add(surNameField, 1, 1)
+        grid.add(Label("Имя:"), 0, 2)
+        grid.add(nameField, 1, 2)
+        grid.add(Label("Отчество:"), 0, 3)
+        grid.add(patroNymicField, 1, 3)
+        grid.add(Label("Номер телефона:"), 0, 4)
+        grid.add(phoneField, 1, 4)
+        grid.add(Label("Телеграмм:"), 0, 5)
+        grid.add(telegramField, 1, 5)
+        grid.add(Label("Почта:"), 0, 6)
+        grid.add(mailField, 1, 6)
+        grid.add(Label("Гит:"), 0, 7)
+        grid.add(gitField, 1, 7)
+        val submitButton = Button("Отправить")
+        submitButton.setOnAction {
+            // Здесь можно обработать данные из полей
+            println("Фамилия: ${surNameField.text}")
+            println("Имя: ${nameField.text}")
+            println("Отчество: ${patroNymicField.text}")
+            println("Номер телефона: ${phoneField.text}")
+            println("Телеграмм: ${telegramField.text}")
+            println("Почта: ${mailField.text}")
+            println("Гит: ${gitField.text}")
+            if (id == 0) {
+                createController.addStudent(surNameField.text,nameField.text,patroNymicField.text,phoneField.text,telegramField.text,mailField.text,gitField.text)
+                readController.refresh_data()
+            } else {
+                updateController.updateStudent(id,surNameField.text, nameField.text,patroNymicField.text, phoneField.text, telegramField.text, mailField.text, gitField.text)
+                readController.refresh_data()
+            }
+            modalStage.close()
+        }
+        grid.add(submitButton, 1, 8)
+        val scene = Scene(grid, 400.0, 300.0)
+        modalStage.scene = scene
+        modalStage.showAndWait()
     }
 }
 
