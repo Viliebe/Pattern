@@ -1,18 +1,20 @@
+import MVC.View
+import StudentLists.StudentListInterface
 import java.sql.Connection
 import java.sql.DriverManager
 import java.sql.ResultSet
 
 
-class StudentsListDB private constructor():StudentListInterface {
+class StudentsListDB private constructor(var view:View):StudentListInterface {
 
     companion object {
 
         @Volatile
         private var instance: StudentsListDB? = null
 
-        fun getInstance() =
+        fun getInstance(_view:View) =
             instance ?: synchronized(this) {
-                instance ?: StudentsListDB().also { instance = it }
+                instance ?: StudentsListDB(_view).also { instance = it }
             }
     }
 
@@ -22,9 +24,9 @@ class StudentsListDB private constructor():StudentListInterface {
     init {
         try {
             connection = DriverManager.getConnection(
-                "jdbc:postgresql://localhost:5433/Students",
+                "jdbc:postgresql://localhost:5432/Students",
                 "postgres",
-                "Sonic2653"
+                "admin"
             )
         } catch (e: Exception) {
             e.printStackTrace()
@@ -58,10 +60,9 @@ class StudentsListDB private constructor():StudentListInterface {
         return null
     }
 
-    override fun getKNStudentShort(k:Int,n:Int):DataList<StudentShort>
+    override fun getKNStudentShort(k:Int,n:Int, filter: String):DataListStudentShort
     {
-        val start = k*n
-        val result = executeQuery("SELECT * FROM student ORDER BY id LIMIT ${n} OFFSET ${k*n};")
+        val result = executeQuery("SELECT * FROM student ${filter} ORDER BY id LIMIT ${n} OFFSET ${k*n};")
         var input = ""
         var sl=mutableListOf<Student>()
         if (result != null) {
@@ -73,9 +74,28 @@ class StudentsListDB private constructor():StudentListInterface {
                 sl.add(Student(input,result.getInt(1)))
             }
         }
-        var ss = sl.map{StudentShort(it)}
+        var ss = sl.map{StudentShort(it)} as MutableList<StudentShort>
 
-        return DataList(ss)
+        return DataListStudentShort(ss,view)
+    }
+
+    override fun getKNStudent(k:Int,n:Int, filter: String):MutableList<Student>
+    {
+        val result = executeQuery("SELECT * FROM student ${filter} ORDER BY id LIMIT ${n} OFFSET ${k*n};")
+        var input = ""
+        var sl=mutableListOf<Student>()
+        if (result != null) {
+            while (result.next()) {
+                input = ""
+                for (i in 2..result.metaData.columnCount) {
+                    input+=result.getString(i)+" "
+                }
+//                println(input)
+                sl.add(Student(input,result.getInt(1)))
+            }
+        }
+
+        return sl
     }
 
     override fun addStudent(student:Student)
@@ -89,7 +109,7 @@ class StudentsListDB private constructor():StudentListInterface {
         else{input+=", '${student.mail}'"}
         if(student.git==null){input+=", NULL"}
         else{input+=", '${student.git}'"}
-        executeQuery("INSERT INTO student (surname, name, fatherName, phone, telegram, mail, git) VALUES (${input});")
+        executeQuery("INSERT INTO student (surName, name, patroNymic, phone, telegram, mail, git) VALUES (${input});")
     }
 
     override fun replaceStudent(id:Int,student: Student)
@@ -103,7 +123,7 @@ class StudentsListDB private constructor():StudentListInterface {
         else{input+=", '${student.mail}'"}
         if(student.git==null){input+=", NULL"}
         else{input+=", '${student.git}'"}
-        executeQuery("UPDATE student SET (surname, name, fatherName, phone, telegram, mail, git) = (${input}) WHERE id=${id};")
+        executeQuery("UPDATE student SET (surName, name, patroNymic, phone, telegram, mail, git) = (${input}) WHERE id=${id};")
     }
 
     override fun deleteStudent(id:Int)

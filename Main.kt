@@ -1,5 +1,3 @@
-import Strategy.*
-
 class Main {
     fun main()
     {
@@ -67,12 +65,12 @@ class Main {
 //    studentDB.replaceStudent(5,Student("Пипинов","Василий","Игоревич"))
 //    studentDB.deleteStudent(5)
 //    println(studentDB.getStudentShortCount())
-        var sl = StudentList("input.txt")
-        sl.addStudent(Student("Атлетов", "Андрей", "Александрович"))
-        println(sl.getById(4).toString())
-        sl.replaceStudent(4, Student(4, "Говнокодов", "Андрей", "Александрович"))
-        println(sl.getById(4).toString())
-        println(sl.getStudentShortCount())
+
+//        var sl = StudentList("pg")
+//        println(sl.getStudentShortCount())
+
+
     }
 }
+
 fun main() = Main().main()
